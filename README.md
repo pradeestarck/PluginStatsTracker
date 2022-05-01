@@ -5,6 +5,10 @@ Simple plugin statistics tracker & website display server.
 
 "Plugin" in this context refers to Minecraft Spigot plugins ([Denizen](https://github.com/DenizenScript/Denizen) and [Sentinel](https://github.com/mcmonkeyprojects/Sentinel) in particular are my own use cases), but theoretically can be used for anything.
 
+### State
+
+In-development, not ready for use.
+
 ### How To Install/Run
 
 Designed for and tested on a Debian Linux server.
@@ -23,7 +27,9 @@ For testing on Windows, `start.ps1` is also available to run via powershell.
 
 ### From Plugins
 
-Must connect to `(URL-BASE)/Stats/Submit` and send form-encoded content with `postid=pluginstats`, `plugin=(PLUGIN_NAME)`, `differentiator=(SOME_UNIQUE_VALUE)` (differentiate can be any semi-text, doesn't not need guaranteed uniqueness), and `pl_(FIELD_NAME)=(FIELD_VALUE)` for each field.
+Must connect approximately once an hour to `(URL-BASE)/Stats/Submit` and send form-encoded content with `postid=pluginstats`, `plugin=(PLUGIN_NAME)`, `differentiator=(SOME_UNIQUE_VALUE)` (differentiate can be any semi-text, doesn't not need guaranteed uniqueness), and `pl_(FIELD_NAME)=(FIELD_VALUE)` for each field.
+
+Connections that vary by up to 30 minutes from the hour mark will be persisted (duplication prevented via the differentiator value).
 
 Fields can be numbers, text, or newline-separated lists
 
