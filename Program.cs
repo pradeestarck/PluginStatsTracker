@@ -26,6 +26,7 @@ namespace PluginStatsServer
         {
             return Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults(webBuilder =>
             {
+                webBuilder.UseEnvironment("Production");
                 webBuilder.UseStartup<Startup>();
             });
         }
