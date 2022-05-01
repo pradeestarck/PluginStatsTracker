@@ -38,13 +38,6 @@ namespace PluginStatsServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddLogging(
-            builder =>
-            {
-                builder.AddFilter("Microsoft", LogLevel.Warning)
-                       .AddFilter("System", LogLevel.Warning)
-                       .AddConsole();
-            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime lifetime)
