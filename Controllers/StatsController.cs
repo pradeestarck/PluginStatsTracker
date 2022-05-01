@@ -45,10 +45,14 @@ namespace PluginStatsServer.Controllers
                 string fieldId = field.ToLowerFast()["pl_".Length..];
                 if (plugin.Fields.TryGetValue(fieldId, out TrackedField tracked))
                 {
-                    StatSubmission.SubmittedValue? val = tracked.GetValueFor(Request.Form[field]);
-                    if (val.HasValue)
+                    string rawVal = Request.Form[field];
+                    if (!string.IsNullOrWhiteSpace(rawVal))
                     {
-                        submission.Values[tracked.ID] = val.Value;
+                        StatSubmission.SubmittedValue? val = tracked.GetValueFor(rawVal);
+                        if (val.HasValue)
+                        {
+                            submission.Values[tracked.ID] = val.Value;
+                        }
                     }
                 }
             }
