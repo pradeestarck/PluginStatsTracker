@@ -43,7 +43,7 @@ namespace PluginStatsTracker.Controllers
                     graphs.Append($"<div class=\"datachart_box\"><h4>{HtmlJsClean(tracked.Display)}</h4>Counted: {(field.Counted)}/{(report.Total)} ({unchecked(field.Counted/report.Total)*100:0.#}%)");
                     if (tracked.Type == TrackedFieldType.INTEGER)
                     {
-                        graphs.Append($"<br>Sum: {field.Total}<br>Average per all servers: {(field.Total / report.Total):0.##}<br>Average per counted entry: {field.Average:0.##}");
+                        graphs.Append($"<br>Sum: {field.Total}<br>Average per all servers: {(field.Total / (float)report.Total):0.##}<br>Average per counted entry: {field.Average:0.##}");
                     }
                     js.Append($"var options_{tracked.ID} = {{\ntitle: '', {style}\n}};\n");
                     js.Append($"var chart_{tracked.ID} = new google.visualization.PieChart(document.getElementById('chart_{tracked.ID}'));\nchart_{tracked.ID}.draw(data_{tracked.ID}, options_{tracked.ID});\n");
