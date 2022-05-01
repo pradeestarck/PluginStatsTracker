@@ -80,7 +80,7 @@ namespace PluginStatsServer.Stats
             return new()
             {
                 FieldID = ID,
-                Values = counters.Select(pair => new StatReport.StatReportFieldValue() { Value = pair.Key, Count = pair.Value }).ToArray(),
+                Values = counters.Select(pair => new StatReport.StatReportFieldValue() { Value = pair.Key, Count = pair.Value }).OrderByDescending(v => v.Count).ToArray(),
                 Total = total,
                 Average = (averageDivider == 0) ? 0 : (float)(average / averageDivider)
             };
