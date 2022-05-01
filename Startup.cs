@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PluginStatsServer.Stats;
 
 namespace PluginStatsServer
 {
@@ -22,11 +23,11 @@ namespace PluginStatsServer
         {
             AssemblyLoadContext.Default.Unloading += (context) =>
             {
-                // ...
+                StatsServer.Close();
             };
             AppDomain.CurrentDomain.ProcessExit += (obj, e) =>
             {
-                // ...
+                StatsServer.Close();
             };
             Configuration = configuration;
         }
@@ -42,7 +43,7 @@ namespace PluginStatsServer
         {
             lifetime.ApplicationStopping.Register(() =>
             {
-                // ...
+                StatsServer.Close();
             });
             if (env.IsDevelopment())
             {
@@ -52,7 +53,7 @@ namespace PluginStatsServer
             {
                 app.UseExceptionHandler("/Error/Any");
             }
-            // TODO: Load & Init
+            StatsServer.Load();
             app.Use(async (context, next) =>
             {
                 await next();
