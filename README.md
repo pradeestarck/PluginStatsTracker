@@ -7,7 +7,7 @@ Simple plugin statistics tracker & website display server.
 
 ### State
 
-In-development, not ready for use.
+Current project status: functional but incomplete. Some features not needed for my own case exist as placeholders only. You can view [my own instance of this server here](https://stats.mcmonkey.org/).
 
 ### How To Install/Run
 

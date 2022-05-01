@@ -18,7 +18,6 @@ namespace PluginStatsServer.Controllers
     {
         public IActionResult ViewPlugin()
         {
-            Console.Error.WriteLine($"VIEW");
             if (!Request.HttpContext.Items.TryGetValue("plugin_id", out object pluginIdObject) || pluginIdObject is not string pluginId)
             {
                 return Redirect("/Error/Error404");

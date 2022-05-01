@@ -28,6 +28,7 @@ namespace PluginStatsServer.Stats
 
         public static void Load()
         {
+            Console.WriteLine("Loading...");
             Directory.CreateDirectory("./data/");
             Database = new LiteDatabase("./data/database.ldb");
             Config = FDSUtility.ReadFile("./config/config.fds");
@@ -51,6 +52,7 @@ namespace PluginStatsServer.Stats
         public static void IdleLoop()
         {
             int lastRecorded = GetCurrentTimeID();
+            Console.WriteLine($"Looping started at {lastRecorded}");
             while (!CancelToken.IsCancellationRequested)
             {
                 try
@@ -72,7 +74,7 @@ namespace PluginStatsServer.Stats
                         {
                             return;
                         }
-                        Console.WriteLine($"Doing stat gather for {plugin.ID}");
+                        Console.WriteLine($"Doing stat gather for {plugin.ID} at {now}");
                         plugin.MakeReport(now);
                     }
                 }

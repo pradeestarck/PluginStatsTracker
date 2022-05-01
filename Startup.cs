@@ -69,7 +69,6 @@ namespace PluginStatsServer
                 {
                     context.Items["plugin_id"] = path[("/plugins/".Length)..];
                     context.Request.Path = "/Plugins/ViewPlugin";
-                    Console.WriteLine($"REDIR TO VIEW");
                 }
                 await next();
             });
@@ -94,6 +93,7 @@ namespace PluginStatsServer
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+            Console.WriteLine("Loaded and serving...");
         }
     }
 }
