@@ -17,7 +17,7 @@ namespace PluginStatsServer.Models
         public string RenderDate()
         {
             string time = Report.StatID.ToString();
-            return time.Length == 10 ? $"{time[0..4]}/{time[5..6]}/{time[7..8]} {time[9..10]}:00 UTC" : "(UNKNOWN)";
+            return time.Length == 10 ? $"{time[0..4]}/{time[4..6]}/{time[6..8]} {time[8..10]}:00 UTC" : "(UNKNOWN)";
         }
     }
 }
