@@ -8,9 +8,9 @@ using FreneticUtilities.FreneticExtensions;
 using FreneticUtilities.FreneticToolkit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
-using PluginStatsServer.Stats;
+using PluginStatsTracker.Stats;
 
-namespace PluginStatsServer.Controllers
+namespace PluginStatsTracker.Controllers
 {
     public class StatsController : Controller
     {

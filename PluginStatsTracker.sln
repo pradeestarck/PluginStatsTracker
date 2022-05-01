@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PluginStatsServer", "PluginStatsServer.csproj", "{36F2F09C-5C02-4AE8-6CFC-FA7D84AF8F85}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PluginStatsTracker", "PluginStatsTracker.csproj", "{36F2F09C-5C02-4AE8-6CFC-FA7D84AF8F85}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FreneticUtilities", "FreneticUtilities\FreneticUtilities\FreneticUtilities.csproj", "{1DB47D6A-4225-4F25-8559-2C6292496953}"
 EndProject

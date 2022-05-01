@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PluginStatsServer.Stats
+namespace PluginStatsTracker.Stats
 {
     public class StatSubmission
     {

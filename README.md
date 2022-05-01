@@ -1,5 +1,5 @@
-PluginStatsServer
------------------
+PluginStatsTracker
+------------------
 
 Simple plugin statistics tracker & website display server.
 
@@ -17,7 +17,7 @@ Usage on other Linux distros is likely very similar. Usage outside Linux may req
 
 - Make sure you have `screen` and `dotnet-6-sdk` available
 - Add a user for the service (via `adduser` generally, then `su` to that user)
-- Clone the git repo (`git clone https://github.com/mcmonkeyprojects/PluginStatsServer`) and enter the folder
+- Clone the git repo (`git clone https://github.com/mcmonkeyprojects/PluginStatsTracker`) and enter the folder
 - Make a folder labeled `config`, inside it make a text file labeled `config.fds`, and fill it with the config sample below (and change values to fit your configuration needs).
 - Call `./update.sh`
 - Will by default open on port 8131. To change this, edit `start.sh`

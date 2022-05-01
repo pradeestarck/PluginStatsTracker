@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.AspNetCore.Html;
-using PluginStatsServer.Stats;
+using PluginStatsTracker.Stats;
 
-namespace PluginStatsServer.Models
+namespace PluginStatsTracker.Models
 {
     public class PluginsModel
     {

@@ -7,7 +7,7 @@ using FreneticUtilities.FreneticDataSyntax;
 using FreneticUtilities.FreneticExtensions;
 using FreneticUtilities.FreneticToolkit;
 
-namespace PluginStatsServer.Stats
+namespace PluginStatsTracker.Stats
 {
     public class TrackedField
     {

@@ -8,10 +8,10 @@ using FreneticUtilities.FreneticExtensions;
 using FreneticUtilities.FreneticToolkit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
-using PluginStatsServer.Stats;
-using PluginStatsServer.Models;
+using PluginStatsTracker.Stats;
+using PluginStatsTracker.Models;
 
-namespace PluginStatsServer.Controllers
+namespace PluginStatsTracker.Controllers
 {
     public class HomeController : Controller
     {

@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "PluginStatsServer": {
+    "PluginStatsTracker": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

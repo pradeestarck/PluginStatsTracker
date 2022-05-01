@@ -8,7 +8,7 @@ using FreneticUtilities.FreneticExtensions;
 using FreneticUtilities.FreneticToolkit;
 using LiteDB;
 
-namespace PluginStatsServer.Stats
+namespace PluginStatsTracker.Stats
 {
     public class StatReport
     {
