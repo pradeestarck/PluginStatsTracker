@@ -89,7 +89,9 @@ namespace PluginStatsServer.Stats
         public static void Close()
         {
             CancelToken.Cancel();
+            Console.WriteLine("Performing database shutdown...");
             Database.Dispose();
+            Console.WriteLine("Database has been shutdown.");
         }
     }
 }

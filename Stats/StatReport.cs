@@ -19,9 +19,13 @@ namespace PluginStatsServer.Stats
 
         public StatReportField[] Fields { get; set; }
 
+        public int Total { get; set; }
+
         public class StatReportField
         {
             public string FieldID { get; set; }
+
+            public float Average { get; set; }
 
             public StatReportFieldValue[] Values { get; set; }
         }

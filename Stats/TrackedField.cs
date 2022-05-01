@@ -19,6 +19,8 @@ namespace PluginStatsServer.Stats
 
         public bool Any = false;
 
+        public int Length;
+
         public List<TrackedFieldValue> Values;
 
         public TrackedField(string _id, FDSSection section)
@@ -27,31 +29,104 @@ namespace PluginStatsServer.Stats
             Type = Enum.Parse<TrackedFieldType>(section.GetString("type"), true);
             Display = section.GetString("display");
             Any = section.GetBool("any", false).Value;
-            Values = section.GetString("values", "").SplitFast(',').Select(s => s.Replace(" ", "")).Where(s => !string.IsNullOrWhiteSpace(s)).Select(s => new TrackedFieldValue(s)).ToList();
+            Values = section.GetString("values", "").SplitFast(',').Select(s => s.Replace(" ", "")).Where(s => !string.IsNullOrWhiteSpace(s)).Select(s => TrackedFieldValue.Parse(s)).ToList();
+            Length = section.GetInt("length", 32).Value;
         }
 
         public StatReport.StatReportField Report(StatSubmission[] stats)
         {
             Dictionary<string, int> counters = new();
+            void bump(string name)
+            {
+                if (counters.TryGetValue(name, out int count))
+                {
+                    counters[name] = count + 1;
+                }
+                else
+                {
+                    counters[name] = 1;
+                }
+            }
+            int averageDivider = 0;
+            double average = 0;
             foreach (StatSubmission stat in stats)
             {
                 if (stat.Values.TryGetValue(ID, out StatSubmission.SubmittedValue val))
                 {
-                    if (counters.TryGetValue(val.Value.Text, out int count))
+                    if (Type == TrackedFieldType.LIST)
                     {
-                        counters[val.Value.Text] = count + 1;
+                        foreach (string bit in val.Value.Text.SplitFast('\n'))
+                        {
+                            if (!string.IsNullOrWhiteSpace(bit))
+                            {
+                                bump(bit);
+                            }
+                        }
                     }
                     else
                     {
-                        counters[val.Value.Text] = 1;
+                        bump(val.Value.Text);
+                    }
+                    if (Type == TrackedFieldType.INTEGER)
+                    {
+                        averageDivider++;
+                        average += val.RawNumber;
                     }
                 }
             }
             return new()
             {
                 FieldID = ID,
-                Values = counters.Select(pair => new StatReport.StatReportFieldValue() { Value = pair.Key, Count = pair.Value }).ToArray()
+                Values = counters.Select(pair => new StatReport.StatReportFieldValue() { Value = pair.Key, Count = pair.Value }).ToArray(),
+                Average = (averageDivider == 0) ? 0 : (float)(average / averageDivider)
             };
+        }
+
+        public StatSubmission.SubmittedValue? GetValueFor(string input)
+        {
+            StatSubmission.SubmittedValue value = new() { Field = this, Raw = input };
+            switch (Type)
+            {
+                case TrackedFieldType.TEXT:
+                    if (input.Length > Length)
+                    {
+                        return null;
+                    }
+                    break;
+                case TrackedFieldType.LIST:
+                    string[] parts = input.SplitFast('\n');
+                    if (parts.Length > 1000 || parts.Any(p => p.Length > Length))
+                    {
+                        return null;
+                    }
+                    break;
+            }
+            if (Any)
+            {
+                return value;
+            }
+            switch (Type)
+            {
+                case TrackedFieldType.TEXT:
+                case TrackedFieldType.LIST:
+                    throw new NotImplementedException("'list' and 'text' types currently require 'any: true'");
+                case TrackedFieldType.INTEGER:
+                    if (!int.TryParse(input, out int intInput))
+                    {
+                        return null;
+                    }
+                    value.RawNumber = intInput;
+                    foreach (TrackedFieldValue possible in Values)
+                    {
+                        if (possible.AppliesTo(intInput))
+                        {
+                            value.Value = possible;
+                            return value;
+                        }
+                    }
+                    return null;
+            }
+            return null;
         }
     }
 
@@ -61,25 +136,26 @@ namespace PluginStatsServer.Stats
 
         public int Min, Max;
 
-        public TrackedFieldValue(string _text)
+        public static TrackedFieldValue Parse(string text)
         {
-            Text = _text;
-            if (Text.EndsWith('+'))
+            TrackedFieldValue toRet = new() { Text = text };
+            if (text.EndsWith('+'))
             {
-                Max = int.MaxValue;
-                Min = int.Parse(Text[..^1]);
+                toRet.Max = int.MaxValue;
+                toRet.Min = int.Parse(text[..^1]);
             }
-            else if (Text.Contains('-'))
+            else if (text.Contains('-'))
             {
-                string before = Text.BeforeAndAfter('-', out string after);
-                Min = int.Parse(before);
-                Max = int.Parse(after);
+                string before = text.BeforeAndAfter('-', out string after);
+                toRet.Min = int.Parse(before);
+                toRet.Max = int.Parse(after);
             }
             else
             {
-                Min = int.Parse(Text);
-                Max = Min;
+                toRet.Min = int.Parse(text);
+                toRet.Max = toRet.Min;
             }
+            return toRet;
         }
 
         public bool AppliesTo(int value)

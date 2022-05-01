@@ -11,6 +11,8 @@ namespace PluginStatsServer.Stats
 
         public DateTimeOffset TimeSubmitted;
 
+        public Dictionary<string, SubmittedValue> Values = new();
+
         public struct SubmittedValue
         {
             public TrackedField Field;
@@ -18,8 +20,8 @@ namespace PluginStatsServer.Stats
             public TrackedFieldValue Value;
 
             public string Raw;
-        }
 
-        public Dictionary<string, SubmittedValue> Values;
+            public int RawNumber;
+        }
     }
 }

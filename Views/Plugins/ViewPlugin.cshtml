@@ -1,0 +1,34 @@
+@model PluginsModel
+@{
+    ViewData["Title"] = "Plugin " + Model.Plugin.Name;
+    ViewData["Description"] = "Stats for " + Model.Plugin.Name + ".\n" + Model.Plugin.Description;
+    ViewData["MetaColor"] = "#00FFFF";
+    ViewData["OtherHeaderLines"] = "";
+}
+
+<div class="center_helper">
+    <div class="card border-primary" style="max-width:90%;margin-left:auto;margin-right:auto;">
+        <div class="card-header">@Model.Plugin.Name</div>
+        <div class="card-body">
+            <img src="@Model.Plugin.LogoImage" height="256" />
+            <p class="card-text">@Model.Plugin.Description</p>
+            <a href="@Model.Plugin.InfoLink" class="card-link">Project Link</a>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+            @Model.JS
+        }
+    </script>
+
+    <br>
+    <h3>This statistic report recorded at: @Model.RenderDate()</h3>
+    <h3>Total servers: @Model.Report.Total</h3>
+    <!-- TODO: Graph over time of total servers -->
+    <br>
+    @Model.Graphs
+</div>

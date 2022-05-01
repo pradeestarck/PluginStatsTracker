@@ -56,6 +56,17 @@ namespace PluginStatsServer
             StatsServer.Load();
             app.Use(async (context, next) =>
             {
+                string path = context.Request.Path.Value.ToLowerFast();
+                if (path.StartsWith("/plugins/") && path != "/plugins/viewplugin")
+                {
+                    context.Items["plugin_id"] = path[("/plugins/".Length)..];
+                    context.Request.Path = "/Plugins/ViewPlugin";
+                    Console.WriteLine($"REDIR TO VIEW");
+                }
+                await next();
+            });
+            app.Use(async (context, next) =>
+            {
                 await next();
                 if (context.Response.StatusCode == 404)
                 {
@@ -73,7 +84,7 @@ namespace PluginStatsServer
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=New}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

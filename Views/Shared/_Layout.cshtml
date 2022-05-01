@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/css/bootstrap_dark.min.css" media="screen">
+    <link rel="stylesheet" href="/css/stats.css">
     <title>@ViewData["Title"] | Plugin Stats</title>
     <meta name="description" content="@ViewData["Description"]" />
     <meta name="theme-color" content="@ViewData["MetaColor"]" />
@@ -18,6 +19,12 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/">Home</a>
                 </li>
+                @foreach (TrackedPlugin plugin in StatsServer.TrackedPlugins.Values)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Plugins/@plugin.ID">@plugin.Name</a>
+                    </li>
+                }
             </ul>
         </div>
     </nav>

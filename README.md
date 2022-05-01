@@ -46,7 +46,10 @@ url-base: https://example.com
 # List plugins to track stats for here
 plugins:
     # Plugin ID as the key
-    Denizen:
+    # Note: IDs should be 'a-z' and '_' only
+    denizen:
+        # The 'proper display name' of this plugin
+        name: Denizen
         # Description, text
         description: Denizen is a scripting engine for Spigot servers!
         # Logo-image, URL to a .png or .gif
@@ -56,6 +59,7 @@ plugins:
         # Set of tracked fields
         fields:
             # Field ID as the key
+            # Note: ID should be 'a-z' and '_' only
             player_count:
                 # Type: 'integer', 'text', or 'list'
                 type: integer
@@ -71,6 +75,8 @@ plugins:
                 values: 0, 1-10, 11-20, 21-30, 31-40, 41-50, 51-75, 76-100, 101-150, 151-200, 201-300, 301-400, 401-500, 501-1000, 1001+
             server_version:
                 type: text
+                # 'text' and 'list' should define a maximum 'length' for strings
+                length: 100
                 display: Version of the server
                 # You can use 'any: true' for both text and number to just allow raw values through unfiltered
                 any: true

@@ -1,0 +1,14 @@
+html {
+    font-size: 16px;
+}
+.center_helper {
+    text-align: center;
+    display: block;
+    justify-content: center;
+}
+hr {
+    border-color: #AAAAAA;
+}
+.card-header {
+    font-weight: bold;
+}

@@ -14,6 +14,8 @@ namespace PluginStatsServer.Stats
     {
         public string ID;
 
+        public string Name;
+
         public string Description;
 
         public string LogoImage;
@@ -30,6 +32,7 @@ namespace PluginStatsServer.Stats
         {
             ID = _id;
             DatabaseReports = reports;
+            Name = section.GetString("name");
             Description = section.GetString("description");
             LogoImage = section.GetString("logo-image");
             InfoLink = section.GetString("info-link");
@@ -38,7 +41,8 @@ namespace PluginStatsServer.Stats
             {
                 foreach (string fieldId in fieldSection.GetRootKeys())
                 {
-                    Fields.Add(fieldId.ToLowerFast(), new TrackedField(fieldId, fieldSection.GetSection(fieldId)));
+                    string field = fieldId.ToLowerFast();
+                    Fields.Add(field, new TrackedField(field, fieldSection.GetSection(fieldId)));
                 }
             }
             Current = new CurrentPluginStats() { ForPlugin = this };
@@ -51,6 +55,25 @@ namespace PluginStatsServer.Stats
                 return;
             }
             DatabaseReports.Insert(Current.Report());
+        }
+
+        public StatReport LastReport()
+        {
+            int now = StatsServer.GetCurrentTimeID();
+            StatReport result = DatabaseReports.FindById(now);
+            if (result is not null)
+            {
+                return result;
+            }
+            for (int i = 0; i < 48; i++)
+            {
+                result = DatabaseReports.FindById(now - i);
+                if (result is not null)
+                {
+                    return result;
+                }
+            }
+            return new StatReport() { ForPluginID = ID, Fields = Array.Empty<StatReport.StatReportField>() };
         }
     }
 }

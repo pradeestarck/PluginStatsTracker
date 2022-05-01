@@ -43,6 +43,7 @@ namespace PluginStatsServer.Stats
             {
                 StatID = StatsServer.GetCurrentTimeID(),
                 ForPluginID = ForPlugin.ID,
+                Total = submissions.Length,
                 Fields = ForPlugin.Fields.Values.Select(f => f.Report(submissions)).ToArray()
             };
         }
