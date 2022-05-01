@@ -7,9 +7,68 @@ Simple plugin statistics tracker & website display server.
 
 ### How To Install/Run
 
+Designed for and tested on a Debian Linux server.
+
+Usage on other Linux distros is likely very similar. Usage outside Linux may require independent research regarding how to install DotNet 6, and how to run a generic executable service perpetually.
+
+- Make sure you have `screen` and `dotnet-6-sdk` available
+- Add a user for the service (via `adduser` generally, then `su` to that user)
+- Clone the git repo (`git clone https://github.com/mcmonkeyprojects/PluginStatsServer`) and enter the folder
+- Make a folder labeled `config`, inside it make a text file labeled `config.fds`, and fill it with the config sample below (and change values to fit your configuration needs).
+- Call `./start.sh`
+- Will by default open on port 8131. To change this, edit `start.sh`
+- It is strongly recommended you run this webserver behind a reverse proxy like Apache2 or Nginx.
+
+For testing on Windows, `start.ps1` is also available to run via powershell.
+
+### From Plugins
+
+Must connect to `(URL-BASE)/Stats/Submit` and send form-encoded content with `postid=pluginstats`, `plugin=(PLUGIN_NAME)`, `differentiator=(SOME_UNIQUE_VALUE)` (differentiate can be any semi-text, doesn't not need guaranteed uniqueness), and `pl_(FIELD_NAME)=(FIELD_VALUE)` for each field.
+
+Fields can be numbers, text, or newline-separated lists
+
+View example implementations [in Sentinel](https://github.com/mcmonkeyprojects/Sentinel/blob/master/src/main/java/org/mcmonkey/sentinel/metrics/StatsRecord.java) or [in Denizen](https://github.com/DenizenScript/Denizen/blob/dev/plugin/src/main/java/com/denizenscript/denizen/utilities/debugging/StatsRecord.java).
 
 ### Configuration
 
+```yml
+# Whether to test the "X-Forwarded-For" web header.
+# Set to 'true' if running behind a reverse-proxy (like Apache2 or Nginx), 'false' if directly exposed.
+trust-x-forwarded-for: true
+# Set to the base URL for the webserver.
+url-base: https://example.com
+# List plugins to track stats for here
+plugins:
+    # Plugin ID as the key
+    Denizen:
+        # Description, text
+        description: Denizen is a scripting engine for Spigot servers!
+        # Logo-image, URL to a .png or .gif
+        logo-image: https://denizenscript.com/images/denizen_logo_embed.png
+        # Relevant info link to send viewers to
+        info-link: https://denizenscript.com/
+        # Set of tracked fields
+        fields:
+            # Field ID as the key
+            player_count:
+                # Type: 'integer', 'text', or 'list'
+                type: integer
+                # Display text about it
+                display: Online players
+                # For numbers, you can list value ranges.
+                # Must be in format like '1' (exact number), or '11-15' (number range), 1001+ (overflow)
+                # Numbers that don't match the options will be ignored (so in this example, '0' values get dropped)
+                values: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11-15, 16-20, 21-30, 31-40, 41-50, 50-75, 76-100, 101-150, 151-200, 201-300, 301-400, 401-500, 501-1000, 1001+
+            script_count:
+                type: integer
+                display: Number of loaded script containers
+                values: 0, 1-10, 11-20, 21-30, 31-40, 41-50, 51-75, 76-100, 101-150, 151-200, 201-300, 301-400, 401-500, 501-1000, 1001+
+            server_version:
+                type: text
+                display: Version of the server
+                # You can use 'any: true' for both text and number to just allow raw values through unfiltered
+                any: true
+```
 
 ### Licensing pre-note:
 
