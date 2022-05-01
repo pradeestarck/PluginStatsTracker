@@ -47,7 +47,7 @@ namespace PluginStatsTracker.Stats
                     counters[name] = 1;
                 }
             }
-            int averageDivider = 0;
+            int counted = 0;
             double average = 0;
             float total = 0;
             foreach (StatSubmission stat in stats)
@@ -71,10 +71,10 @@ namespace PluginStatsTracker.Stats
                     else if (Type == TrackedFieldType.INTEGER)
                     {
                         bump(val.Value.Text);
-                        averageDivider++;
                         average += val.RawNumber;
                         total += val.RawNumber;
                     }
+                    counted++;
                 }
             }
             return new()
@@ -82,7 +82,8 @@ namespace PluginStatsTracker.Stats
                 FieldID = ID,
                 Values = counters.Select(pair => new StatReport.StatReportFieldValue() { Value = pair.Key, Count = pair.Value }).OrderByDescending(v => v.Count).ToArray(),
                 Total = total,
-                Average = (averageDivider == 0) ? 0 : (float)(average / averageDivider)
+                Counted = counted,
+                Average = (counted == 0) ? 0 : (float)(average / counted)
             };
         }
 

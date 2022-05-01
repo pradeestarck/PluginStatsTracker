@@ -29,6 +29,8 @@ namespace PluginStatsTracker.Stats
 
             public float Total { get; set; }
 
+            public int Counted { get; set; }
+
             public StatReportFieldValue[] Values { get; set; }
         }
 
