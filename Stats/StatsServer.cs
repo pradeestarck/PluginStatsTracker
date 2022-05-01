@@ -72,6 +72,7 @@ namespace PluginStatsServer.Stats
                         {
                             return;
                         }
+                        Console.WriteLine($"Doing stat gather for {plugin.ID}");
                         plugin.MakeReport(now);
                     }
                 }

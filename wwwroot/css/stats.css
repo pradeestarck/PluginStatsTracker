@@ -12,3 +12,9 @@ hr {
 .card-header {
     font-weight: bold;
 }
+.datachart {
+    width: 1200px;
+    height: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}

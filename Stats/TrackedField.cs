@@ -49,13 +49,14 @@ namespace PluginStatsServer.Stats
             }
             int averageDivider = 0;
             double average = 0;
+            float total = 0;
             foreach (StatSubmission stat in stats)
             {
                 if (stat.Values.TryGetValue(ID, out StatSubmission.SubmittedValue val))
                 {
                     if (Type == TrackedFieldType.LIST)
                     {
-                        foreach (string bit in val.Value.Text.SplitFast('\n'))
+                        foreach (string bit in val.Raw.SplitFast('\n'))
                         {
                             if (!string.IsNullOrWhiteSpace(bit))
                             {
@@ -63,14 +64,16 @@ namespace PluginStatsServer.Stats
                             }
                         }
                     }
-                    else
+                    else if (Type == TrackedFieldType.TEXT)
+                    {
+                        bump(val.Raw);
+                    }
+                    else if (Type == TrackedFieldType.INTEGER)
                     {
                         bump(val.Value.Text);
-                    }
-                    if (Type == TrackedFieldType.INTEGER)
-                    {
                         averageDivider++;
                         average += val.RawNumber;
+                        total += val.RawNumber;
                     }
                 }
             }
@@ -78,6 +81,7 @@ namespace PluginStatsServer.Stats
             {
                 FieldID = ID,
                 Values = counters.Select(pair => new StatReport.StatReportFieldValue() { Value = pair.Key, Count = pair.Value }).ToArray(),
+                Total = total,
                 Average = (averageDivider == 0) ? 0 : (float)(average / averageDivider)
             };
         }
@@ -90,6 +94,7 @@ namespace PluginStatsServer.Stats
                 case TrackedFieldType.TEXT:
                     if (input.Length > Length)
                     {
+                        Console.Error.WriteLine($"Submission to field {ID} ignored due to length: {input.Length} > {Length}");
                         return null;
                     }
                     break;
@@ -97,6 +102,7 @@ namespace PluginStatsServer.Stats
                     string[] parts = input.SplitFast('\n');
                     if (parts.Length > 1000 || parts.Any(p => p.Length > Length))
                     {
+                        Console.Error.WriteLine($"Submission to field {ID} ignored due to length: {input.Length} > {Length} or {parts.Length} > 1000");
                         return null;
                     }
                     break;

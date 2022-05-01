@@ -27,6 +27,8 @@ namespace PluginStatsServer.Stats
 
             public float Average { get; set; }
 
+            public float Total { get; set; }
+
             public StatReportFieldValue[] Values { get; set; }
         }
 

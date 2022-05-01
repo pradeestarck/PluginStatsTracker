@@ -64,20 +64,16 @@ plugins:
                 # Type: 'integer', 'text', or 'list'
                 type: integer
                 # Display text about it
-                display: Online players
+                display: Online Players (Excluding Zeros)
                 # For numbers, you can list value ranges.
                 # Must be in format like '1' (exact number), or '11-15' (number range), 1001+ (overflow)
                 # Numbers that don't match the options will be ignored (so in this example, '0' values get dropped)
                 values: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11-15, 16-20, 21-30, 31-40, 41-50, 50-75, 76-100, 101-150, 151-200, 201-300, 301-400, 401-500, 501-1000, 1001+
-            script_count:
-                type: integer
-                display: Number of loaded script containers
-                values: 0, 1-10, 11-20, 21-30, 31-40, 41-50, 51-75, 76-100, 101-150, 151-200, 201-300, 301-400, 401-500, 501-1000, 1001+
             server_version:
                 type: text
                 # 'text' and 'list' should define a maximum 'length' for strings
                 length: 100
-                display: Version of the server
+                display: Server Version
                 # You can use 'any: true' for both text and number to just allow raw values through unfiltered
                 any: true
 ```

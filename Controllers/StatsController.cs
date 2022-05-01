@@ -46,12 +46,10 @@ namespace PluginStatsServer.Controllers
                 if (plugin.Fields.TryGetValue(fieldId, out TrackedField tracked))
                 {
                     StatSubmission.SubmittedValue? val = tracked.GetValueFor(Request.Form[field]);
-                    if (!val.HasValue)
+                    if (val.HasValue)
                     {
-                        Console.Error.WriteLine($"Ignoring invalid field submission '{fieldId}' to plugin '{plugin.ID}'");
-                        continue;
+                        submission.Values[tracked.ID] = val.Value;
                     }
-                    submission.Values[tracked.ID] = val.Value;
                 }
             }
             plugin.Current.Submit(submission);

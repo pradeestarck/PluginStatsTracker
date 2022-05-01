@@ -64,9 +64,15 @@ namespace PluginStatsServer.Controllers
                         js.Append($"['{HtmlJsClean(value.Value)}',{value.Count}],");
                     }
                     js.Append("\n]);\n");
-                    js.Append($"var options_{tracked.ID} = {{\ntitle: '{HtmlJsClean(tracked.Display)}'\n}};\n");
+                    const string style = "backgroundColor: '#222', pieSliceBorderColor: '#222', titleTextStyle: { color: '#FFFFFF' }, legend: { textStyle: { color: '#FFFFFF' } }";
+                    graphs.Append($"<h4>{HtmlJsClean(tracked.Display)}</h4>");
+                    if (tracked.Type == TrackedFieldType.INTEGER)
+                    {
+                        graphs.Append($"Total: {field.Total}<br>Average per all servers: {(field.Total / report.Total)}<br>Average per counted entry: {field.Average}");
+                    }
+                    js.Append($"var options_{tracked.ID} = {{\ntitle: '', {style}\n}};\n");
                     js.Append($"var chart_{tracked.ID} = new google.visualization.PieChart(document.getElementById('chart_{tracked.ID}'));\nchart_{tracked.ID}.draw(data_{tracked.ID}, options_{tracked.ID});\n");
-                    graphs.Append($"<div id=\"chart_{tracked.ID}\" style=\"width:1200px;height:500px;\"></div>\n");
+                    graphs.Append($"<div id=\"chart_{tracked.ID}\" class=\"datachart piechart\"></div>\n");
                 }
             }
             return View(new PluginsModel() { Plugin = plugin, Report = report, JS = new HtmlString(js.ToString()), Graphs = new HtmlString(graphs.ToString()) });
