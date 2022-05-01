@@ -54,6 +54,7 @@ namespace PluginStatsTracker.Stats
             {
                 return;
             }
+            Current.Clean();
             DatabaseReports.Insert(Current.Report());
         }
 
