@@ -46,7 +46,7 @@ namespace PluginStatsServer.Stats
         public static int GetCurrentTimeID()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
-            return int.Parse($"{now.Year}{now.Month}{now.Day}{now.Hour}");
+            return int.Parse(now.ToString("yyyyMMddHH"));
         }
 
         public static void IdleLoop()
