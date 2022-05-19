@@ -21,7 +21,11 @@ namespace PluginStatsTracker.Stats
 
         public int Length;
 
+        public int Minimum = 5;
+
         public List<TrackedFieldValue> Values;
+
+        public bool TimeGraphMonth = false, TimeGraphLong = false;
 
         public TrackedField(string _id, FDSSection section)
         {
@@ -31,6 +35,9 @@ namespace PluginStatsTracker.Stats
             Any = section.GetBool("any", false).Value;
             Values = section.GetString("values", "").SplitFast(',').Select(s => s.Replace(" ", "")).Where(s => !string.IsNullOrWhiteSpace(s)).Select(s => TrackedFieldValue.Parse(s)).ToList();
             Length = section.GetInt("length", 32).Value;
+            TimeGraphMonth = section.GetBool("time_graph.month", false).Value;
+            TimeGraphLong = section.GetBool("time_graph.long", false).Value;
+            Minimum = section.GetInt("minimum", Any ? 5 : 1).Value;
         }
 
         public StatReport.StatReportField Report(StatSubmission[] stats)

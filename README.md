@@ -76,6 +76,14 @@ plugins:
                 display: Server Version
                 # You can use 'any: true' for both text and number to just allow raw values through unfiltered
                 any: true
+                # Set the minimum number of occurrences to count a value - counts below get lumped into 'other'.
+                minimum: 3
+                # Enable time_graph to get a line graph of the value over time
+                time_graph:
+                    # 'Month': one tick for every hour in the past month
+                    month: true
+                    # 'Long': one tick for each day up to the past 5 years
+                    long: true
 ```
 
 ### Licensing pre-note:

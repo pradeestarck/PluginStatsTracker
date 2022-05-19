@@ -43,9 +43,14 @@ namespace PluginStatsTracker.Stats
             Task.Factory.StartNew(IdleLoop);
         }
 
+        public static int DateToTimeID(DateTimeOffset date)
+        {
+            return int.Parse(date.ToString("yyyyMMddHH"));
+        }
+
         public static int GetCurrentTimeID()
         {
-            return int.Parse(DateTimeOffset.UtcNow.ToString("yyyyMMddHH"));
+            return DateToTimeID(DateTimeOffset.UtcNow);
         }
 
         public static void IdleLoop()
